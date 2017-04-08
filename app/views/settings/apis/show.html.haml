@@ -1,0 +1,16 @@
+- content_for :page_title do
+  = t('settings.api_keys')
+
+%p You can use these keys in apps that access your Mastodon account. If you are making a bot, these are the keys you will need to authorize it.
+  
+%h3 Client ID
+%code= current_user.default_api_application.uid
+
+%h3 Access Token
+%code= current_user.api_access_token.token
+  
+= simple_form_for current_user, url: settings_api_path, html: { method: :put } do |f|
+  = render 'shared/error_messages', object: current_user
+
+  .actions
+    = f.button :button, t('generic.reset'), type: :submit

@@ -26,4 +26,26 @@ class User < ApplicationRecord
   def setting_default_privacy
     settings.default_privacy || (account.locked? ? 'private' : 'public')
   end
+
+  def default_api_name
+    [ account.username, "API access" ].join(" ")
+  end
+  
+  def default_api_application
+    Doorkeeper::Application.find_or_create_by(
+      name:default_api_name,
+      redirect_uri: "urn:ietf:wg:oauth:2.0:oob",
+      scopes: "read write follow")
+  end
+  
+  def api_access_token
+    Doorkeeper::AccessToken.find_or_create_by(
+        application_id:default_api_application.id,
+        resource_owner_id: self.id) do |t|
+
+      t.scopes = 'read write follow'
+      t.expires_in = Doorkeeper.configuration.access_token_expires_in
+      t.use_refresh_token = Doorkeeper.configuration.refresh_token_enabled?
+    end
+  end
 end

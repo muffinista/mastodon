@@ -85,4 +85,45 @@ RSpec.describe User, type: :model do
       expect(user.valid?).to be_truthy
     end
   end
+
+  describe "API methods" do
+    let(:user) { Fabricate(:user, account: account) }
+    describe 'default_api_name' do
+      it "should include account username" do
+        expect(user.default_api_name).to eql("alice API access")
+      end
+    end
+    
+    describe "default_api_application" do
+      it "should create once and then persist" do
+        app = user.default_api_application
+        expect(app).to be_a(Doorkeeper::Application)
+
+        app2 = user.reload.default_api_application
+        expect(app2).to eql(app)
+      end
+
+      it "recreates if deleted" do
+        app = user.default_api_application
+        expect(app).to be_a(Doorkeeper::Application)
+
+        app.destroy
+
+        app2 = user.default_api_application
+        expect(app2).to be_a(Doorkeeper::Application)
+
+        expect(app2).to_not eql(app)
+      end
+    end
+    
+    describe "api_access_token" do
+      it "should create once and then persist" do
+        token = user.api_access_token
+        expect(token.application).to eql(user.default_api_application)
+
+        token2 = user.reload.api_access_token
+        expect(token2).to eql(token)
+      end
+    end
+  end
 end

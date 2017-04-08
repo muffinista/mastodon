@@ -81,6 +81,7 @@ en:
     storage: Media storage
   generic:
     changes_saved_msg: Changes successfully saved!
+    reset: Reset!
     powered_by: powered by %{link}
     save_changes: Save changes
     validation_errors:
@@ -129,6 +130,7 @@ en:
     prompt: 'You are going to follow:'
   settings:
     authorized_apps: Authorized apps
+    api_keys: API keys
     back: Back to Mastodon
     edit_profile: Edit profile
     export: Data export

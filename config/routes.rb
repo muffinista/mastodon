@@ -49,6 +49,7 @@ Rails.application.routes.draw do
   get '/@:account_username/:id', to: 'statuses#show', as: :short_account_status
 
   namespace :settings do
+    resource :api, only: [:show, :update]
     resource :profile, only: [:show, :update]
     resource :preferences, only: [:show, :update]
     resource :import, only: [:show, :create]
