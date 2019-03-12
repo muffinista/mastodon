@@ -820,6 +820,7 @@ en:
         one: "%{count} video"
         other: "%{count} videos"
     boosted_from_html: Boosted from %{acct_link}
+    cannot_send: You cannot send this toot
     content_warning: 'Content warning: %{warning}'
     disallowed_hashtags:
       one: 'contained a disallowed hashtag: %{tags}'
