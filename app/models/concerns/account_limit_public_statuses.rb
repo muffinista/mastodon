@@ -10,9 +10,11 @@ module AccountLimitPublicStatuses
   private
 
   def limit_public_statuses
+    # return if no environment variable
+    return if (time_between_posts = ENV['SECONDS_BETWEEN_PUBLIC_POSTS'].to_i).zero?
+
     # ignore remote statuses, non-public statuses, and statuses with missing accounts
     return if account.nil? || account.domain.present? || visibility != 'public' || account.last_status_at.nil?
-    return if (time_between_posts = ENV['SECONDS_BETWEEN_PUBLIC_POSTS'].to_i).zero?
 
     # get most recent public post from account
     last_public_status = account.statuses.with_public_visibility.recent.limit(1).first
